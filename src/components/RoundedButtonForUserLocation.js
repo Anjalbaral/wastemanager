@@ -3,9 +3,9 @@ import {View,Text,TouchableOpacity,Image} from 'react-native';
 
 const RoundedButtonForUserLocation = ({onPress}) =>{
     return(
-        <View style={{position:'absolute',zIndex:1,alignItems:'flex-end'}}>
-          <TouchableOpacity onPress={onPress} style={{marginTop:10,marginRight:10}} onPress={onPress}>
-             <Image style={{width:50,height:50}} source={require('../images/findMe.png')} />
+        <View style={{marginTop:7,position:'absolute',zIndex:1,alignItems:'center',backgroundColor:'white',borderRadius:30}}>
+          <TouchableOpacity onPress={onPress} onPress={onPress}>
+             <Image style={{width:55,height:55}} source={require('../images/currentlocationicon.png')} />
           </TouchableOpacity>
          </View> 
     );

@@ -1,18 +1,35 @@
 import React from 'react';
 import {View,Image} from 'react-native';
 import MapView from 'react-native-maps';
+import firebase from 'firebase';
+
+
 
 const UserMaps = (props) =>{
 
-    let userLocationMarker = null;
+   markerClicked = (DumpingLocation,DumpingLocationID) => {
+     props.formNavigation.navigate('MainForm',{dumpinglocation:DumpingLocation,dumpinglocationid:DumpingLocationID})
+   }
 
+   getDumpingAddress=(dumpaddress,dumpinglocid)=>{
+       this.markerClicked(dumpaddress,dumpinglocid)
+   }
+ 
+   onMarkerClick=(locationID)=>{
+    const refUser = firebase.database().ref('dumpinglocations/'+locationID)
+    refUser.on('value',(snapshot)=>{
+      this.getDumpingAddress(snapshot.val().address,locationID)
+   },err=>{console.log(err)})
+     }
+   
+    let userLocationMarker = null;
 
     if(props.userLocation)
     {
       userLocationMarker= <MapView.Marker coordinate={props.userLocation}  />
     }
     const dumpingMarkers = props.dumpingPlaces.map(userPlace=>(
-    <MapView.Marker pinColor='orange' coordinate={userPlace} key={userPlace.id} >
+    <MapView.Marker onPress={(navigation)=>{onMarkerClick(userPlace.id)}} pinColor='orange' coordinate={userPlace} key={userPlace.id} >
     <Image source={require('../images/wasteloc.png')} style={{height: 33, width:22}} />
     </MapView.Marker>
     ));

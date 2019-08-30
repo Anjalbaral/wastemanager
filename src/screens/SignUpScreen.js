@@ -33,7 +33,7 @@ class SignUpScreen extends Component{
         );
     }
 
-       onFail(err)
+    onFail(err)
        {
         this.setState({loading:false,SignUpMsg:'Failed to create your account ! try another email'})
        }
@@ -44,7 +44,7 @@ class SignUpScreen extends Component{
       }
     
       onSubmit = () =>
-     {
+       {
         this.setState({loading:true})
         // axios.post('https://us-central1-wastemanager-2df45.cloudfunctions.net/createUser',{
         //     email:this.state.email,
@@ -68,7 +68,7 @@ class SignUpScreen extends Component{
             userRef2.child(userUid).set({email:email,name:name})       
         this.onSuccess(res)})
         .catch(err=>this.onFail(err))
-     }
+        }
 
     render()
     {

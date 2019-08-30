@@ -5,7 +5,7 @@ class NavigatorDrawerStructure extends Component{
 
     displayDrawer=()=>
     {
-      this.props.navigationProps.openDrawer();
+      this.props.navigationProps.toggleDrawer();
     };
 
     render(){

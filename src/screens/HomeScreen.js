@@ -10,7 +10,7 @@ class HomeScreen extends Component{
                <Text>HomeScreen</Text>
             </View>
     );
-}
+  }
 }
 
 export default HomeScreen;

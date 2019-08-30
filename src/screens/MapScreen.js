@@ -1,12 +1,20 @@
 import React,{Component} from 'react';
-import {View,StyleSheet,Button,ActivityIndicator} from 'react-native';
+import {View,StyleSheet,Button,ActivityIndicator,Dimensions} from 'react-native';
 import UserMaps from '../components/UserMaps';
 import Geolocation from 'react-native-geolocation-service';
 import firebase from 'firebase';
 import RoundedButtonForUserLocation from '../components/RoundedButtonForUserLocation';
 import RoundedButtonForDumpingLocations from '../components/RoundedButtonForDumpingLocations';
 
+const SCREEN_WIDTH = Dimensions.get('window').width
+
 class MapScreen extends Component {
+
+    constructor()
+    {
+        super()
+      
+    }
 
     state = {
 
@@ -16,12 +24,12 @@ class MapScreen extends Component {
         currentUser:null,
     }
 
-   componentDidMount(){
-     this.setState({mapLoaded:true})  
-    //  this.getUserLocation()
-    // this.getUserPlacesAPI()
-    }
 
+
+   componentDidMount(){
+     this.setState({mapLoaded:true}) 
+    }
+   
     getUserLocation=()=>{
 
         let currentUser = firebase.auth().currentUser.uid
@@ -67,13 +75,30 @@ class MapScreen extends Component {
           });
       })
       .catch(err=>console.log(err));
-      
   }
 
-  onRegionChangeComplete=(region)=>{
-      this.setState({region})
-      console.log(region)
-  }
+//   calculateDistance=()=>
+//     {
+//         const googleMapsClient = require('@google/maps').createClient({
+//             key: 'AIzaSyCtDBx0yUbSwSHITuY8L_Su81bqwl_iiss'
+//           });
+
+//         var latitude1 = 39.46;
+//         var longitude1 = -0.36;
+//         var latitude2 = 40.40;
+//         var longitude2 = -3.68;
+        
+//         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(latitude1, longitude1), new google.maps.LatLng(latitude2, longitude2)); 
+//         console.log(distance)   
+        
+//         googleMapsClient.geocode({
+//             address: '1600 Amphitheatre Parkway, Mountain View, CA'
+//           }, function(err, response) {
+//             if (!err) {
+//               console.log(response.json.results);
+//             }
+//           });
+//      }
   
  
     render()
@@ -89,11 +114,10 @@ class MapScreen extends Component {
         return(
             <View style={styles.viewStyle}>
              <View>
-                <View style={{marginLeft:360}}><RoundedButtonForUserLocation onPress={this.getUserLocation} /></View>
-                <View style={{marginLeft:180}}><RoundedButtonForDumpingLocations onPress={this.getUserPlacesAPI} /></View>
+                <View style={{marginLeft:SCREEN_WIDTH-60}}><RoundedButtonForUserLocation onPress={this.getUserLocation} /></View>
+                <View style={{marginLeft:SCREEN_WIDTH-230}}><RoundedButtonForDumpingLocations onPress={this.getUserPlacesAPI} /></View>
             </View> 
-             <UserMaps  userLocation={this.state.userLocation} dumpingPlaces={this.state.dumpingPlaces} />
-            
+             <UserMaps formNavigation={this.props.navigation} userLocation={this.state.userLocation} dumpingPlaces={this.state.dumpingPlaces} />
             </View>
         );
     }

@@ -10,8 +10,23 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import SettingScreen from '../screens/SettingScreen';
 import NavigatorDrawerStructure from '../components/NavigatorDrawerStructure';
 import DrawerHeader from '../components/DrawerHeader';
-//import SetMyLocation from '../components/SetMyLocation';
-//import Geolocation from 'react-native-geolocation-service';
+import HistoryScreen from '../screens/HistoryScreen'
+import AboutUsScreen from '../screens/AboutUsScreen';
+import DrawerLabel from '../components/DrawerLabel';
+import mainForm from '../screens/mainForm';
+import Collector from '../screens/Collector';
+import Customer from '../screens/Customer';
+import LogOutScreen from '../screens/LogOutScreen';
+
+// const customerORcollector_StackNavigator = createBottomTabNavigator({
+    
+//     customerORcollectorScreen:{
+//         screen:customerORcollector,navigationOptions:({navigation})=>({
+//             title:'use as'
+//         }),
+//        }
+
+// })
 
 
 const HomeScreenWithMaps_StackNavigator = createStackNavigator({
@@ -19,6 +34,7 @@ const HomeScreenWithMaps_StackNavigator = createStackNavigator({
         screen:MapScreen,
         navigationOptions:({navigation})=>({
             title:null,
+            tabBarVisible:false,
             headerStyle:{
                 zIndex:1,
                 backgroundColor: 'transparent'
@@ -26,26 +42,60 @@ const HomeScreenWithMaps_StackNavigator = createStackNavigator({
             headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />,
         }),
     },
-});
+})
 
 const SettingScreen_StackNacigator = createStackNavigator({
     Second:{
         screen:SettingScreen,
         navigationOptions:({navigation})=>({
+          tabBarVisible:false,
           title:'settingScreen',
           headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
         }),
     },
 });
+const HistoryScreen_StackNavigator = createStackNavigator({
+    Third:{
+        screen:HistoryScreen,
+        navigationOptions:({navigation})=>({
+            tabBarVisible:false,
+            title:'History',
+            headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
+        })
+    }
+});
+
+const AboutUsScreen_StackNavigator = createStackNavigator({
+    fourth:{
+        screen:AboutUsScreen,navigationOptions:({navigation})=>({
+            tabBarVisible:false,
+            title:'AboutDevelopers',
+           headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
+        })
+
+    }
+});
+
+const LogOutScreen_StackNavigator = createStackNavigator({
+    fifth:{
+        screen:LogOutScreen,navigationOptions:({navigation})=>({
+            tabBarVisible:false,
+            title:'LogoutError',
+           headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
+        })
+
+    }
+})
+
 
 const Tab = createBottomTabNavigator({
    Welcome:{screen:WelcomeScreen,
-   navigationOptions:({ navigation }) =>({
-       header:null,
-       tabBarVisible: false,
-   })
-   },
-    AuthScreens:{
+             navigationOptions:({ navigation }) =>({
+                   header:null,
+                   tabBarVisible: false,
+            })
+          },
+  AuthScreens:{
         screen:createStackNavigator({
             Login:{screen:LoginScreen,navigationOptions:({navigation})=>({
               header:null,
@@ -54,25 +104,39 @@ const Tab = createBottomTabNavigator({
                 header:null,
             })},
         }),navigationOptions:({navigation})=>({
-            // header:null,
-            // tabBarVisible: false,
+            header:null,
+            tabBarVisible: false,
         })
-    },
+        },
    main:{
        screen:createBottomTabNavigator({
            Map:{
                 screen:createDrawerNavigator({
                    HomeScreenWithMaps:
                    {
-                    screen:HomeScreenWithMaps_StackNavigator,navigationOptions:({
-                          drawerLabel:'Home',
-
+                        screen:HomeScreenWithMaps_StackNavigator,navigationOptions:({
+                          drawerLabel:<DrawerLabel img={require('../images/homeicon.png')} text="Home" />
                     })
+                   },
+                   HistoryScreen:{
+                     screen:HistoryScreen_StackNavigator,navigationOptions:({
+                         drawerLabel:<DrawerLabel img={require('../images/historyicon.png')} text="History" />
+                     })
                    },
                    settingScreen:
                    {
                        screen:SettingScreen_StackNacigator,navigationOptions:({
-                       drawerLabel:'settings'
+                       drawerLabel:<DrawerLabel img={require('../images/settingicon.png')} text="Setting" />
+                       })
+                   },
+                   AboutUs:{
+                      screen:AboutUsScreen_StackNavigator,navigationOptions:({
+                          drawerLabel:<DrawerLabel img={require('../images/aboutus.png')} text="About" />
+                      })
+                   },
+                   LogOut:{
+                       screen:LogOutScreen_StackNavigator,navigationOptions:({
+                        drawerLabel:<DrawerLabel img={require('../images/logouticon.png')} text="Logout" />
                        })
                    }
                    },{
@@ -81,27 +145,38 @@ const Tab = createBottomTabNavigator({
                        drawerOpenRoute:'DrawerOpen',
                        drawerCloseRoute:'DrawerClose',
                        drawerToggleRoute:'DrawerToggle'
-                   }
-                   ),
-            
-                      navigationOptions:({navigation})=>({
-                      // headerLeft:<NavigationPreloadManager navigationProps={navigation} />,
-                       tabBarVisible: false,
-                     })
+                   }),navigationOptions:({
+                       tabBarVisible:false
+                   })
                },
-           Form:{
-               screen:DataSubmissionScreen
-                },
+
+           FormScreen:{
+                screen:createBottomTabNavigator({
+                    MainForm:{screen:mainForm,navigationOptions:({navigation})=>({
+                        tabBarVisible:false
+                    })
+                    },
+                    customerScreen:{screen:Customer,navigationOptions:({navigation})=>({
+                        tabBarVisible:false
+                    })},
+                    collectorScreen:{screen:Collector,navigationOptions:({navigation})=>({
+                        tabBarVisible:false
+                    })}
+                }),navigationOptions:({
+                    tabBarVisible:false
+                })
+                    },
            Review:{
                      screen:createStackNavigator({
                         LocationScr:{screen:ReviewScreen},
                         LocDetails:{screen:LocationDetails},
+                    }),navigationOptions:({
+                        tabBarVisible:false
                     })
-                }
-       }),navigationOptions:({navigation})=>({
-        header:null,
-        tabBarVisible: false,
-       })
+                  }
+       }),navigationOptions:({
+        tabBarVisible:false
+           })
    }
 });
 
