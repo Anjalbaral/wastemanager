@@ -9,13 +9,15 @@ import CollectorInput from '../components/CollectorInput';
 class mainForm extends Component{
 
     state={
-        collectorDialog:'notVisible'
+        collectorDialog:'notVisible',
+        successmsg:''
     }
-
     onPressBack=()=>{
         this.props.navigation.navigate('Map')
         }
     
+   
+
     displayDialog=(dumpinglocationsid2,dumpinglocation2)=>
     {
         if(this.state.collectorDialog==="visible")
@@ -42,7 +44,7 @@ class mainForm extends Component{
     const { state } = this.props.navigation;
     let dumpinglocationsid = state.params.dumpinglocationid
     let dumpinglocation = state.params.dumpinglocation
-
+   
     return(
         <ImageBackground source={require('../images/final.png')} style={{flex:1,flexDirection:'column'}}>
         <View style={{flexDirection:'row',flex:0.2,paddingTop:20,paddingLeft:20}}>
@@ -64,7 +66,7 @@ class mainForm extends Component{
          
         </ImageBackground>
     );
-}
+  }
 }
 
 export default mainForm;
