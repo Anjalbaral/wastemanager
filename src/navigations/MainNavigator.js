@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import {View,Text} from 'react-native';
 import {createStackNavigator,createBottomTabNavigator,createAppContainer,createDrawerNavigator} from 'react-navigation';
 import DataSubmissionScreen from '../screens/DataSubmissionScreen';
 import LocationDetails from '../screens/LocationDetails';
@@ -18,15 +19,14 @@ import Collector from '../screens/Collector';
 import Customer from '../screens/Customer';
 import LogOutScreen from '../screens/LogOutScreen';
 
-// const customerORcollector_StackNavigator = createBottomTabNavigator({
-    
-//     customerORcollectorScreen:{
-//         screen:customerORcollector,navigationOptions:({navigation})=>({
-//             title:'use as'
-//         }),
-//        }
-
-// })
+const HeaderType =({navigation})=>{
+    return(
+        <View style={{width:'100%',flexDirection:'row',backgroundColor:'rgba(100,100,100,0)'}}>
+            <NavigatorDrawerStructure navigationProps={navigation} />
+            <Text style={{fontSize:20}}>History</Text>
+        </View>
+    );
+}
 
 
 const HomeScreenWithMaps_StackNavigator = createStackNavigator({
@@ -48,8 +48,12 @@ const SettingScreen_StackNacigator = createStackNavigator({
     Second:{
         screen:SettingScreen,
         navigationOptions:({navigation})=>({
-          tabBarVisible:false,
-          title:'settingScreen',
+            title:null,
+            tabBarVisible:false,
+            headerStyle:{
+                zIndex:1,
+                backgroundColor: 'transparent'
+            },
           headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
         }),
     },
@@ -58,8 +62,12 @@ const HistoryScreen_StackNavigator = createStackNavigator({
     Third:{
         screen:HistoryScreen,
         navigationOptions:({navigation})=>({
+            title:null,
             tabBarVisible:false,
-            title:'History',
+            headerStyle:{
+                zIndex:1,
+                backgroundColor: 'transparent'
+            },
             headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
         })
     }
@@ -68,24 +76,28 @@ const HistoryScreen_StackNavigator = createStackNavigator({
 const AboutUsScreen_StackNavigator = createStackNavigator({
     fourth:{
         screen:AboutUsScreen,navigationOptions:({navigation})=>({
+            title:null,
             tabBarVisible:false,
-            title:'AboutDevelopers',
+            headerStyle:{
+                zIndex:1,
+                backgroundColor: 'transparent'
+            },
            headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
         })
 
     }
 });
 
-const LogOutScreen_StackNavigator = createStackNavigator({
-    fifth:{
-        screen:LogOutScreen,navigationOptions:({navigation})=>({
-            tabBarVisible:false,
-            title:'LogoutError',
-           headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
-        })
+// const LogOutScreen_StackNavigator = createStackNavigator({
+//     fifth:{
+//         screen:LogOutScreen,navigationOptions:({navigation})=>({
+//             tabBarVisible:false,
+//             title:'LogoutError',
+//            headerLeft:<NavigatorDrawerStructure navigationProps={navigation} />
+//         })
 
-    }
-})
+//     }
+// })
 
 
 const Tab = createBottomTabNavigator({
@@ -120,7 +132,8 @@ const Tab = createBottomTabNavigator({
                    },
                    HistoryScreen:{
                      screen:HistoryScreen_StackNavigator,navigationOptions:({
-                         drawerLabel:<DrawerLabel img={require('../images/historyicon.png')} text="History" />
+                         drawerLabel:<DrawerLabel img={require('../images/historyicon.png')} text="History" />,
+                         tabBarVisible:false
                      })
                    },
                    settingScreen:
@@ -133,12 +146,12 @@ const Tab = createBottomTabNavigator({
                       screen:AboutUsScreen_StackNavigator,navigationOptions:({
                           drawerLabel:<DrawerLabel img={require('../images/aboutus.png')} text="About" />
                       })
-                   },
-                   LogOut:{
-                       screen:LogOutScreen_StackNavigator,navigationOptions:({
-                        drawerLabel:<DrawerLabel img={require('../images/logouticon.png')} text="Logout" />
-                       })
                    }
+                //    LogOut:{
+                //        screen:LogOutScreen_StackNavigator,navigationOptions:({
+                //         drawerLabel:<DrawerLabel img={require('../images/logouticon.png')} text="Logout" />
+                //        })
+                //    }
                    },{
                        initialRouteName:'HomeScreenWithMaps',
                        contentComponent:DrawerHeader,

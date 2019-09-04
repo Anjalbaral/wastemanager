@@ -103,14 +103,6 @@ class MapScreen extends Component {
  
     render()
     {
-        // if(!this.state.mapLoaded)
-        // {
-        //     return(
-        //         <View style={{flex:1,JustifyContent:'center'}}>
-        //            <ActivityIndicator size="large" />
-        //         </View>
-        //     );
-        // }
         return(
             <View style={styles.viewStyle}>
              <View>

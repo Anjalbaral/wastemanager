@@ -28,7 +28,7 @@ class CollectorInput extends Component{
         userRef = firebase.database().ref('collectorIDs/'+collectorUID)
         userRef.on('value',(snapshot)=>{
              this.matchCollectorCode(snapshot.val().id)
-        })
+        },err=>{alert('not verified')})
     }
 
     matchCollectorCode=(collectorCode)=>{

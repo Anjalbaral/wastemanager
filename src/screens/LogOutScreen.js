@@ -4,10 +4,17 @@ import firebase from 'firebase';
 
 class LogOutScreen extends Component{
 
+    logout=()=>{
+        firebase.auth().signOut()
+    }
+
     render()
     {
         return(
-            <Text>LogoutPage</Text>
+            <View>
+          {this.logout()}
+          { this.props.navigation.navigate('AuthScreens')}
+          </View>
         );
     }
 }

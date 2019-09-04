@@ -12,7 +12,6 @@ class Customer extends Component{
        pickerDisplayed:false,
        boraNO:'',
        totalboranumber:'',
-      //  oldboranum:''
          }
 
   setPickerValue=(pickedValue)=>{
@@ -27,11 +26,6 @@ class Customer extends Component{
       })
     }
 
-    // setTotalBoraNum=(boraNum)=>{
-    //   alert(boraNum)
-    //                   } 
-    // updateUserWasteDetails=(prevtime,prevcount,prevtype,locationName,locationID)=>{
-    // }
 
   updateWasteMaterialsData=(loc,id,borano,type,dateandtime)=>{
     firebase.database().ref('wastematerialsdata/'+loc+'/'+id).update({
@@ -41,13 +35,24 @@ class Customer extends Component{
      })
   }
 
-  updateUserHistory=(id,dateid,borano,loc,type)=>{
+  updateUserHistory=(id,dateid,borano,loc,type,fulldate)=>{
+    let email = firebase.auth().currentUser.email
     firebase.database().ref('userwastehistory/'+id).child(dateid).set({
+      email:email,
       numberofbora:borano,
       wastetype:type,
       submittedlocation:loc
+    }) 
+
+    firebase.database().ref('recentuserhistory/'+id).update({
+      location:loc,
+      date:fulldate,
+      bora:borano,
+      type:type
     })
   }
+
+
 
   updateWholeDumpLocation=(total,name,type)=>{
 
@@ -56,6 +61,7 @@ class Customer extends Component{
         totalbora:total
      })
     }
+    alert('successfully submitted')
   }
 
     onSubmitBtn=(dumpinglocation,locationID)=>{
@@ -74,7 +80,7 @@ class Customer extends Component{
        this.updateWasteMaterialsData(dumpinglocation,curUsrID,numberOfBora,wasteType,dateandtimecombined)
         
        var currentDateId =year.toString()+month.toString()+date.toString()+hours.toString()+min.toString()+sec.toString()
-       this.updateUserHistory(curUsrID,currentDateId,numberOfBora,dumpinglocation,wasteType)
+       this.updateUserHistory(curUsrID,currentDateId,numberOfBora,dumpinglocation,wasteType,dateandtimecombined)
        
        var newborano = this.state.boraNO
        firebase.database().ref('dumpingwasestatus/'+dumpinglocation+'/'+wasteType).once('value',(snapshot)=>{
@@ -82,14 +88,6 @@ class Customer extends Component{
        let totalbora = parseInt(snapshot.val().totalbora)+parseInt(newborano)
         this.updateWholeDumpLocation(totalbora,dumpinglocation,wasteType)
           })
-        
-        //  firebase.database().ref('dumpingwasestatus/'+dumpinglocation+'/'+wasteType).set({
-        //    totalbora:3
-        //  })
-        // this.updateWholeDumpLocation(dumpinglocation,this.state.WasteType)
-       
-      //  this.updateDumpingWasteStatus(dumpinglocation,wasteType,numberOfBora)
-      //firebase.database().ref('wastematerialsdata/'+dumpinglocation+'/'+curUsrID).on('value',(snapshot)=>{this.updateUserWasteDetails(snapshot.val().recentdateandtime,snapshot.val().numberofbora,snapshot.val().wastetype,dumpinglocation,locationID)})
       }
 
     onPressBack=()=>{
@@ -121,8 +119,6 @@ class Customer extends Component{
       const { state } = this.props.navigation;
       let dumpinglocationsid = state.params.dumpinglocationid
       let dumpinglocation = state.params.dumpinglocation
-      // let curwastetype = this.state.WasteType
-      // var newboracount = this.state.boraNO
 
   return(
     <ImageBackground style={styles.backStyle} source={require('../images/final.png')}>
@@ -159,8 +155,6 @@ class Customer extends Component{
                  <View style={{paddingTop:50,width:'100%',alignItems:'center'}}>
                    <CustomerSubmitBtn onPress={()=>{this.onSubmitBtn(dumpinglocation,dumpinglocationsid)}}>Submit</CustomerSubmitBtn>
                  </View>
-                 {/* <View>{this.updateDumpingDate(this.state.oldboranum,this.state.boraNO)}</View> */}
-                 {/* <View>{this.updateWholeDumpLocation(dumpinglocation,this.state.WasteType)}</View> */}
                  </View>
                  <View>
              <Modal animationType={"slide"} visible={this.state.pickerDisplayed} transparent={true} onRequestClose={()=>{console.log('request for close')}} >

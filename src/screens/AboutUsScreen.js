@@ -1,14 +1,14 @@
 import React,{Component} from 'react';
-import {Text,View} from 'react-native';
+import {Text,View,ImageBackground,Image} from 'react-native';
 
 class AboutUsScreen extends Component{
     render(){
       return(
-        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-          <Text>AboutUsScreen</Text>
-        </View>
+           <ImageBackground source={require('../images/final.png')} style={{flexDirection:'column',flex:1,alignItems:'center',justifyContent:'center',padding:20,marginTop:-60}}>
+               <Image source={require('../images/undercunstruction.png')} style={{width:'100%',height:400}} />
+            </ImageBackground>
             );
-}
-}
+        }
+   }
 
 export default AboutUsScreen;

@@ -1,18 +1,92 @@
 import React,{Component} from 'react';
-import {Text,View,TouchableOpacity,Image,StyleSheet,ImageBackground} from 'react-native';
+import {Card,Text,View,TouchableOpacity,Image,StyleSheet,ImageBackground} from 'react-native';
+import CollectorCard from '../components/CollectorCard';
+import CollectorCardSection from '../components/CollectorCardSection';
+import CardSection from '../components/CardSection';
+import NewButton from '../components/NewButton';
+import firebase from 'firebase';
 
 class Collector extends Component{
+   
+  state={
+    organicboranum:'',
+    recycleboranum:'',
+    unrecycleboranum:'',
+    othersboranum:''
+  }
 
     onPressBack=()=>{
         this.props.navigation.navigate('MainForm')
     }
+   
+    getAccessToDatabase=(address)=>{
+     //organic
+      firebase.database().ref('dumpingwasestatus/'+address+'/organic').update({
+        totalbora:0
+      })
+      //recycle
+      firebase.database().ref('dumpingwasestatus/'+address+'/recycle').update({
+        totalbora:0
+      })
+      
+      //unrecycle
+      firebase.database().ref('dumpingwasestatus/'+address+'/unrecycle').update({
+        totalbora:0
+      })
+
+      //others
+      firebase.database().ref('dumpingwasestatus/'+address+'/others').update({
+        totalbora:0
+      })
+
+       }
+
+
+    // setOrganicBoraNum=(orgboranum)=>{
+    //   return(
+    //     <Text style={{fontSize:30,color:'#808080'}}>{orgboranum}</Text>
+    //   );
+    // }
+
+
+    getLocationData=(address)=>{
+
+      //organic data
+      firebase.database().ref('dumpingwasestatus/'+address+'/organic').on('value',(snapshot)=>{
+       let organic = snapshot.val().totalbora
+       this.setState({
+         organicboranum:organic
+       }) 
+      })
+
+      //recycledata
+      firebase.database().ref('dumpingwasestatus/'+address+'/recycle').on('value',(snapshot)=>{
+        let recycle = snapshot.val().totalbora
+        this.setState({
+          recycleboranum:recycle
+        }) 
+       })
+
+       //unrecycle
+       firebase.database().ref('dumpingwasestatus/'+address+'/unrecycle').on('value',(snapshot)=>{
+        let unrecycle = snapshot.val().totalbora
+        this.setState({
+          unrecycleboranum:unrecycle
+        }) 
+       })
+
+       //others
+       firebase.database().ref('dumpingwasestatus/'+address+'/others').on('value',(snapshot)=>{
+        let others = snapshot.val().totalbora
+        this.setState({
+          othersboranum:others
+        }) 
+       })
+      }   
 
     render(){
       const {state} = this.props.navigation;
       let address = state.params.collectingLocation
-      // const { state } = this.props.navigation;
-      // let dumpinglocationsid = state.params.dumpinglocationid
-      // let dumpinglocation = state.params.dumpinglocation
   return(
     <ImageBackground style={styles.backStyle} source={require('../images/final.png')}>
          <View style={{flexDirection:'row',flex:0.2,paddingLeft:20,paddingTop:20}}>
@@ -26,9 +100,46 @@ class Collector extends Component{
          </View>
          </View>
          <View style={styles.viewStyle}>
-           <Text style={{color:'white'}}>
-           Welcome Collector
-           </Text>
+          <CollectorCard>
+           <CollectorCardSection>
+            <View style={{width:'90%'}}>
+              <View style={{flexDirection:'row'}}>
+              <View style={{height:120,alignItems:'center',justifyContent:'center',flex:0.5}}>
+                <Text style={{fontSize:20}}>Recycle</Text>
+                <Text style={{fontSize:30,color:'#808080'}} >0{this.state.recycleboranum}</Text>
+                <Text>Bora</Text>
+              </View>
+              <View style={{height:120,alignItems:'center',justifyContent:'center',flex:0.5}}>
+                <Text style={{fontSize:20}}>Organic</Text>
+                <Text  style={{fontSize:30,color:'#808080'}}>0{this.state.organicboranum}</Text>
+                <Text>Bora</Text>
+              </View>
+              </View>
+            </View> 
+           </CollectorCardSection>
+           <CollectorCardSection>
+            <View style={{width:'90%'}}>
+              <View style={{flexDirection:'row'}}>
+              <View style={{height:120,alignItems:'center',justifyContent:'center',flex:0.5}}>
+                <Text style={{fontSize:20}}>Unrecycle</Text>
+                <Text style={{fontSize:30,color:'#808080'}} >0{this.state.unrecycleboranum}</Text>
+                <Text>Bora</Text>
+              </View>
+              <View style={{height:120,alignItems:'center',justifyContent:'center',flex:0.5}}>
+                <Text style={{fontSize:20}}>Other</Text>
+                <Text style={{fontSize:30,color:'#808080'}}>0{this.state.othersboranum}</Text>
+                <Text>Bora</Text>
+              </View>
+              </View>
+            </View> 
+           </CollectorCardSection>
+           <CollectorCardSection>
+           <View style={{flexDirection:'column'}}>
+             <NewButton onPress={()=>this.getLocationData(address)}>Refresh</NewButton>
+             <NewButton onPress={()=>this. getAccessToDatabase(address)}>Collect</NewButton>
+             </View>  
+           </CollectorCardSection>
+          </CollectorCard>
          </View>
       </ImageBackground>
   );}
@@ -42,7 +153,11 @@ const styles = StyleSheet.create({
      flex:1
     },
     viewStyle:{
-        flex:0.9,  
+        flex:0.9,
+        borderWidth:1,
+        borderColor:'white',
+        borderTopRightRadius:20,
+        borderTopLeftRadius:20,  
        justifyContent:'center',
        alignItems:'center'
       }

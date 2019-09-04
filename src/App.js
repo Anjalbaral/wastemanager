@@ -3,6 +3,8 @@ import {Text,View} from 'react-native';
 import createAppContainer from './navigations/MainNavigator';
 import firebase from 'firebase';
 
+console.disableYellowBox = true;
+
 class App extends Component{
   
 
