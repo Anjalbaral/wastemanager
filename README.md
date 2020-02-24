@@ -1,3 +1,3 @@
 # wastemanager
-waste management system
-React Native Project with Firebase
+waste management system is a 
+React Native Project with Firebase database
