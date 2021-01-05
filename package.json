@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@google/maps": "^0.5.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "crypto": "^1.0.1",
     "firebase": "^6.3.5",
     "gmaps.geometry": "^0.5.0",
